@@ -1,0 +1,63 @@
+import Fastify, { FastifyInstance } from 'fastify';
+import { serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod';
+import fastifyCors from '@fastify/cors';
+import fastifyJwt from '@fastify/jwt';
+import fastifySwagger from '@fastify/swagger';
+import fastifySwaggerUi from '@fastify/swagger-ui';
+import { env } from './config/env';
+
+export function buildApp(): FastifyInstance {
+  const app = Fastify({
+    logger: {
+      level: env.NODE_ENV === 'production' ? 'info' : 'debug',
+    },
+  });
+
+  // Zod as the validator and serializer for all routes
+  app.setValidatorCompiler(validatorCompiler);
+  app.setSerializerCompiler(serializerCompiler);
+
+  app.register(fastifyCors, { origin: true });
+
+  app.register(fastifyJwt, { secret: env.JWT_SECRET });
+
+  app.register(fastifySwagger, {
+    openapi: {
+      openapi: '3.0.0',
+      info: {
+        title: 'SlotWise API',
+        description: 'Plataforma de agendamento de serviços — SlotWise',
+        version: '1.0.0',
+      },
+      servers: [{ url: `http://localhost:${env.PORT}` }],
+      components: {
+        securitySchemes: {
+          bearerAuth: {
+            type: 'http',
+            scheme: 'bearer',
+            bearerFormat: 'JWT',
+          },
+        },
+      },
+    },
+  });
+
+  app.register(fastifySwaggerUi, {
+    routePrefix: '/docs',
+    uiConfig: { docExpansion: 'list', deepLinking: false },
+  });
+
+  app.get('/health', async () => ({
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+  }));
+
+  return app;
+}
+
+const app = buildApp();
+
+app.listen({ port: env.PORT, host: '0.0.0.0' }).catch((error) => {
+  app.log.error(error);
+  process.exit(1);
+});
