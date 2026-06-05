@@ -5,6 +5,8 @@ import fastifyJwt from '@fastify/jwt';
 import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
 import { env } from './config/env';
+import { authRoutes } from './interfaces/http/routes/authRoutes';
+import { registerErrorHandler } from './interfaces/http/errorHandler';
 
 export function buildApp(): FastifyInstance {
   const app = Fastify({
@@ -47,10 +49,14 @@ export function buildApp(): FastifyInstance {
     uiConfig: { docExpansion: 'list', deepLinking: false },
   });
 
+  app.setErrorHandler(registerErrorHandler);
+
   app.get('/health', async () => ({
     status: 'ok',
     timestamp: new Date().toISOString(),
   }));
+
+  app.register(authRoutes, { prefix: '/api/v1/auth' });
 
   return app;
 }
