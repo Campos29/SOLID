@@ -1,15 +1,21 @@
 import Fastify, { FastifyInstance } from 'fastify';
-import { serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod';
+import {
+  serializerCompiler,
+  validatorCompiler,
+  jsonSchemaTransform,
+} from 'fastify-type-provider-zod';
 import fastifyCors from '@fastify/cors';
 import fastifyJwt from '@fastify/jwt';
 import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
 import { env } from './config/env';
 import { authRoutes } from './interfaces/http/routes/authRoutes';
+import { providerRoutes } from './interfaces/http/routes/providerRoutes';
 import { registerErrorHandler } from './interfaces/http/errorHandler';
 
 export function buildApp(): FastifyInstance {
   const app = Fastify({
+    ignoreTrailingSlash: true,
     logger: {
       level: env.NODE_ENV === 'production' ? 'info' : 'debug',
     },
@@ -42,6 +48,7 @@ export function buildApp(): FastifyInstance {
         },
       },
     },
+    transform: jsonSchemaTransform,
   });
 
   app.register(fastifySwaggerUi, {
@@ -57,6 +64,7 @@ export function buildApp(): FastifyInstance {
   }));
 
   app.register(authRoutes, { prefix: '/api/v1/auth' });
+  app.register(providerRoutes, { prefix: '/api/v1/providers' });
 
   return app;
 }

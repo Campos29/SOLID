@@ -3,11 +3,13 @@ import { hasZodFastifySchemaValidationErrors } from 'fastify-type-provider-zod';
 import { UserAlreadyExistsError } from '../../application/errors/UserAlreadyExistsError';
 import { InvalidCredentialsError } from '../../application/errors/InvalidCredentialsError';
 import { InvalidRefreshTokenError } from '../../application/errors/InvalidRefreshTokenError';
+import { ProviderAlreadyExistsError } from '../../application/errors/ProviderAlreadyExistsError';
 
 const statusByErrorName: Record<string, number> = {
   [UserAlreadyExistsError.name]: 409,
   [InvalidCredentialsError.name]: 401,
   [InvalidRefreshTokenError.name]: 401,
+  [ProviderAlreadyExistsError.name]: 409,
 };
 
 const reasonByStatus: Record<number, string> = {
