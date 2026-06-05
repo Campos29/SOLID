@@ -1,10 +1,13 @@
 import { env } from '../../config/env';
 import { pool } from '../../infrastructure/database/pool';
 import { PgUserRepository } from '../../infrastructure/repositories/PgUserRepository';
+import { PgProviderRepository } from '../../infrastructure/repositories/PgProviderRepository';
 import { JwtTokenService } from '../../infrastructure/auth/JwtTokenService';
 import { RegisterUseCase } from '../../application/use-cases/RegisterUseCase';
 import { LoginUseCase } from '../../application/use-cases/LoginUseCase';
 import { RefreshTokenUseCase } from '../../application/use-cases/auth/RefreshTokenUseCase';
+import { RegisterProviderUseCase } from '../../application/use-cases/provider/RegisterProviderUseCase';
+import { ListProvidersUseCase } from '../../application/use-cases/provider/ListProvidersUseCase';
 import { ITokenService } from '../../domain/interfaces/ITokenService';
 
 export interface AuthDependencies {
@@ -12,6 +15,11 @@ export interface AuthDependencies {
   loginUseCase: LoginUseCase;
   refreshTokenUseCase: RefreshTokenUseCase;
   tokenService: ITokenService;
+}
+
+export interface ProviderDependencies {
+  registerProviderUseCase: RegisterProviderUseCase;
+  listProvidersUseCase: ListProvidersUseCase;
 }
 
 // Composition root: concrete implementations are wired here, at the
@@ -30,5 +38,14 @@ export function buildAuthDependencies(): AuthDependencies {
     loginUseCase: new LoginUseCase(userRepository),
     refreshTokenUseCase: new RefreshTokenUseCase(tokenService),
     tokenService,
+  };
+}
+
+export function buildProviderDependencies(): ProviderDependencies {
+  const providerRepository = new PgProviderRepository(pool);
+
+  return {
+    registerProviderUseCase: new RegisterProviderUseCase(providerRepository),
+    listProvidersUseCase: new ListProvidersUseCase(providerRepository),
   };
 }
