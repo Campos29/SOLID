@@ -1,13 +1,28 @@
+import { Navigate, Route, Routes } from 'react-router-dom'
+import { LoginPage } from './pages/LoginPage'
+import { RegisterPage } from './pages/RegisterPage'
+import { HomePage } from './pages/HomePage'
+import { useAuth } from './context/authContext'
+
 function App() {
+  const { isAuthenticated } = useAuth()
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold text-gray-900">SlotWise</h1>
-        <p className="mt-2 text-lg text-gray-600">
-          Sistema de agendamento inteligente
-        </p>
-      </div>
-    </div>
+    <Routes>
+      <Route
+        path="/login"
+        element={isAuthenticated ? <Navigate to="/" replace /> : <LoginPage />}
+      />
+      <Route
+        path="/register"
+        element={isAuthenticated ? <Navigate to="/" replace /> : <RegisterPage />}
+      />
+      <Route
+        path="/"
+        element={isAuthenticated ? <HomePage /> : <Navigate to="/login" replace />}
+      />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   )
 }
 
