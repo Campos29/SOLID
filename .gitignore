@@ -36,3 +36,11 @@ lerna-debug.log*
 # OS files
 .DS_Store
 Thumbs.db
+
+.env
+*.pdf
+
+*.md
+
+node_modules/
+client/node_modules/
