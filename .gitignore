@@ -40,6 +40,7 @@ Thumbs.db
 .env
 *.pdf
 
+*.md
 
 node_modules/
 client/node_modules/
