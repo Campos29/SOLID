@@ -4,7 +4,7 @@ import { extractErrorMessage } from '../lib/api'
 import {
   formatDuration,
   formatPrice,
-  formatSlotTime,
+  formatSlotRange,
   todayAsInputValue,
 } from '../lib/format'
 import type { AvailableSlot, Provider, Service } from '../types/scheduling'
@@ -96,13 +96,15 @@ export function AppointmentScheduler({ provider, onClose }: AppointmentScheduler
         serviceId: selectedServiceId,
         startsAt: selectedSlot,
       })
-      setConfirmation('Agendamento confirmado com sucesso!')
+      setConfirmation('Agendamento enviado! Aguarde a confirmação do prestador.')
     } catch (err) {
       setError(extractErrorMessage(err, 'Não foi possível concluir o agendamento.'))
     } finally {
       setIsBooking(false)
     }
   }, [provider.id, selectedServiceId, selectedSlot])
+
+  const selectedService = services.find((service) => service.id === selectedServiceId)
 
   return (
     <div
@@ -187,7 +189,16 @@ export function AppointmentScheduler({ provider, onClose }: AppointmentScheduler
               </div>
 
               <div className="flex flex-col gap-2">
-                <span className="text-sm font-medium text-gray-700">Horários disponíveis</span>
+                <div>
+                  <span className="text-sm font-medium text-gray-700">Horários disponíveis</span>
+                  {selectedService && (
+                    <p className="mt-0.5 text-xs text-gray-500">
+                      Cada opção mostra o período do atendimento (
+                      {formatDuration(selectedService.durationInMinutes)}). Intervalos maiores
+                      entre opções indicam horários já ocupados.
+                    </p>
+                  )}
+                </div>
                 {isLoadingSlots ? (
                   <p className="text-sm text-gray-500">Buscando horários...</p>
                 ) : slots.length === 0 ? (
@@ -195,7 +206,7 @@ export function AppointmentScheduler({ provider, onClose }: AppointmentScheduler
                     Nenhum horário livre para esta data. Tente outro dia.
                   </p>
                 ) : (
-                  <div className="grid grid-cols-3 gap-2 sm:grid-cols-4">
+                  <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                     {slots.map((slot) => {
                       const isSelected = selectedSlot === slot.startsAt
                       return (
@@ -205,11 +216,11 @@ export function AppointmentScheduler({ provider, onClose }: AppointmentScheduler
                           onClick={() => setSelectedSlot(slot.startsAt)}
                           className={
                             isSelected
-                              ? 'rounded-lg bg-indigo-600 px-2 py-2 text-sm font-semibold text-white'
-                              : 'rounded-lg border border-gray-300 px-2 py-2 text-sm text-gray-700 transition-colors hover:border-indigo-500 hover:text-indigo-600'
+                              ? 'rounded-lg bg-indigo-600 px-2 py-2 text-xs font-semibold text-white sm:text-sm'
+                              : 'rounded-lg border border-gray-300 px-2 py-2 text-xs text-gray-700 transition-colors hover:border-indigo-500 hover:text-indigo-600 sm:text-sm'
                           }
                         >
-                          {formatSlotTime(slot.startsAt)}
+                          {formatSlotRange(slot.startsAt, slot.endsAt)}
                         </button>
                       )
                     })}

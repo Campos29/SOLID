@@ -3,6 +3,7 @@ import type {
   Appointment,
   AvailableSlot,
   CreateAppointmentPayload,
+  ProviderAppointment,
   Service,
 } from '../types/scheduling'
 
@@ -41,6 +42,46 @@ export const schedulingService = {
 
   async createAppointment(payload: CreateAppointmentPayload): Promise<Appointment> {
     const { data } = await api.post<Appointment>('/appointments', payload)
+    return data
+  },
+
+  async listMyAppointments(status?: string): Promise<Appointment[]> {
+    const params = status ? { status } : undefined
+    const { data } = await api.get<{ appointments: Appointment[] }>('/appointments/me', {
+      params,
+    })
+    return data.appointments
+  },
+
+  async cancelAppointment(appointmentId: string): Promise<Appointment> {
+    const { data } = await api.patch<Appointment>(`/appointments/${appointmentId}/cancel`)
+    return data
+  },
+
+  async listProviderAppointments(
+    providerId: string,
+    status?: string,
+  ): Promise<ProviderAppointment[]> {
+    const params = status ? { status } : undefined
+    const { data } = await api.get<{ appointments: ProviderAppointment[] }>(
+      `/providers/${providerId}/appointments`,
+      { params },
+    )
+    return data.appointments
+  },
+
+  async confirmAppointment(appointmentId: string): Promise<Appointment> {
+    const { data } = await api.patch<Appointment>(`/appointments/${appointmentId}/confirm`)
+    return data
+  },
+
+  async rejectAppointment(appointmentId: string): Promise<Appointment> {
+    const { data } = await api.patch<Appointment>(`/appointments/${appointmentId}/reject`)
+    return data
+  },
+
+  async completeAppointment(appointmentId: string): Promise<Appointment> {
+    const { data } = await api.patch<Appointment>(`/appointments/${appointmentId}/complete`)
     return data
   },
 }

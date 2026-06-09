@@ -6,6 +6,8 @@ export interface Provider {
   name: string
   description: string
   category: string
+  averageRating?: number
+  reviewCount?: number
   createdAt: string
 }
 
@@ -35,6 +37,11 @@ export interface Appointment {
   endsAt: string
   status: string
   createdAt: string
+}
+
+export interface ProviderAppointment extends Appointment {
+  clientName: string
+  serviceName: string
 }
 
 export interface CreateAppointmentPayload {

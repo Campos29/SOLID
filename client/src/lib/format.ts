@@ -25,10 +25,30 @@ export function formatSlotTime(isoTimestamp: string): string {
   })
 }
 
+// Shows the full booking window (start – end) for a slot option.
+export function formatSlotRange(startsAt: string, endsAt: string): string {
+  return `${formatSlotTime(startsAt)} – ${formatSlotTime(endsAt)}`
+}
+
 // YYYY-MM-DD in the local timezone, used as the default scheduler date and as
 // the minimum selectable day so customers cannot book in the past.
 export function todayAsInputValue(): string {
   const now = new Date()
   const offsetMs = now.getTimezoneOffset() * 60 * 1000
   return new Date(now.getTime() - offsetMs).toISOString().slice(0, 10)
+}
+
+export function formatRating(rating: number): string {
+  return rating.toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 1 })
+}
+
+const STATUS_LABELS: Record<string, string> = {
+  pending: 'Pendente',
+  confirmed: 'Confirmado',
+  completed: 'Concluído',
+  cancelled: 'Cancelado',
+}
+
+export function formatAppointmentStatus(status: string): string {
+  return STATUS_LABELS[status.toLowerCase()] ?? status
 }
