@@ -1,5 +1,6 @@
 import { Appointment } from '@domain/entities/Appointment';
 import { IAppointmentReader, IAppointmentWriter } from '@domain/interfaces/IAppointmentRepository';
+import { IAppointmentStatusPublisher } from '@domain/interfaces/IAppointmentStatusObserver';
 import { ICancellationStrategy, CancellationStrategyResult } from '@domain/interfaces/ICancellationStrategy';
 import { AppointmentNotFoundError } from '../../errors/AppointmentNotFoundError';
 
@@ -7,6 +8,7 @@ export interface CancelAppointmentInput {
   appointmentId: string;
   requestedAt: Date;
   servicePriceInCents: number;
+  recipientEmail?: string;
 }
 
 export interface CancelAppointmentOutput {
@@ -19,6 +21,7 @@ export class CancelAppointmentUseCase {
     private readonly appointmentReader: IAppointmentReader,
     private readonly appointmentWriter: IAppointmentWriter,
     private readonly cancellationStrategy: ICancellationStrategy,
+    private readonly statusPublisher?: IAppointmentStatusPublisher,
   ) {}
 
   async execute(input: CancelAppointmentInput): Promise<CancelAppointmentOutput> {
@@ -27,6 +30,7 @@ export class CancelAppointmentUseCase {
       throw new AppointmentNotFoundError();
     }
 
+    const previousStatus = found.status;
     const cancelled = found.cancel(input.requestedAt);
 
     const cancellationResult = this.cancellationStrategy.calculate({
@@ -36,6 +40,13 @@ export class CancelAppointmentUseCase {
     });
 
     await this.appointmentWriter.save(cancelled);
+    await this.statusPublisher?.publish({
+      appointment: cancelled,
+      previousStatus,
+      currentStatus: cancelled.status,
+      changedAt: input.requestedAt,
+      recipientEmail: input.recipientEmail,
+    });
 
     return { appointment: cancelled, cancellationResult };
   }
