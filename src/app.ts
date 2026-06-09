@@ -11,6 +11,7 @@ import fastifySwaggerUi from '@fastify/swagger-ui';
 import { env } from './config/env';
 import { authRoutes } from './interfaces/http/routes/authRoutes';
 import { providerRoutes } from './interfaces/http/routes/providerRoutes';
+import { reviewRoutes } from './interfaces/http/routes/reviewRoutes';
 import { registerErrorHandler } from './interfaces/http/errorHandler';
 
 export function buildApp(): FastifyInstance {
@@ -65,6 +66,7 @@ export function buildApp(): FastifyInstance {
 
   app.register(authRoutes, { prefix: '/api/v1/auth' });
   app.register(providerRoutes, { prefix: '/api/v1/providers' });
+  app.register(reviewRoutes, { prefix: '/api/v1/appointments' });
 
   return app;
 }
