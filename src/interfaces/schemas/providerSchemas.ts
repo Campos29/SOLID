@@ -23,6 +23,9 @@ export const createProviderBodySchema = z.object({
 
 export type CreateProviderBody = z.infer<typeof createProviderBodySchema>;
 
+export const updateProviderBodySchema = createProviderBodySchema;
+export type UpdateProviderBody = z.infer<typeof updateProviderBodySchema>;
+
 export const listProvidersQuerySchema = z.object({
   category: z
     .string()

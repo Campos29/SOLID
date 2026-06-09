@@ -1,11 +1,12 @@
 import { preHandlerHookHandler } from 'fastify';
+import { UserRole } from '../../../domain/entities/User';
 
 // Aligns the decoded JWT shape with the payload issued by JwtTokenService,
 // so request.user is strongly typed across the HTTP layer.
 declare module '@fastify/jwt' {
   interface FastifyJWT {
-    payload: { userId: string; role: string };
-    user: { userId: string; role: string };
+    payload: { userId: string; role: UserRole };
+    user: { userId: string; role: UserRole };
   }
 }
 
