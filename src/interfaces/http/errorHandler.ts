@@ -4,12 +4,14 @@ import { UserAlreadyExistsError } from '../../application/errors/UserAlreadyExis
 import { InvalidCredentialsError } from '../../application/errors/InvalidCredentialsError';
 import { InvalidRefreshTokenError } from '../../application/errors/InvalidRefreshTokenError';
 import { ProviderAlreadyExistsError } from '../../application/errors/ProviderAlreadyExistsError';
+import { ReviewSubmissionUnavailableError } from '../../application/errors/ReviewSubmissionUnavailableError';
 
 const statusByErrorName: Record<string, number> = {
   [UserAlreadyExistsError.name]: 409,
   [InvalidCredentialsError.name]: 401,
   [InvalidRefreshTokenError.name]: 401,
   [ProviderAlreadyExistsError.name]: 409,
+  [ReviewSubmissionUnavailableError.name]: 501,
 };
 
 const reasonByStatus: Record<number, string> = {
@@ -17,6 +19,7 @@ const reasonByStatus: Record<number, string> = {
   401: 'Unauthorized',
   409: 'Conflict',
   500: 'Internal Server Error',
+  501: 'Not Implemented',
 };
 
 export function registerErrorHandler(
