@@ -16,7 +16,7 @@ export const registerBodySchema = z.object({
     .max(255, 'Name must be at most 255 characters')
     .describe('Full name of the user'),
   email: emailSchema,
-  // bcrypt only considers the first 72 bytes, so a longer password is misleading
+
   password: z
     .string()
     .min(8, 'Password must be at least 8 characters')

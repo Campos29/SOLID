@@ -1,5 +1,5 @@
-// Mirrors the roles accepted by the backend (see src/domain/entities/User.ts).
-// 'Admin' is managed internally and is not offered on the public sign-up form.
+
+
 export const USER_ROLES = ['Provider', 'Client'] as const
 
 export type UserRole = (typeof USER_ROLES)[number]

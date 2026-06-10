@@ -19,8 +19,8 @@ type AppointmentRow = {
   updated_at: Date;
 };
 
-// PostgreSQL exclusion constraint raised when two active appointments overlap
-// for the same provider (see migration 005).
+
+
 const EXCLUSION_VIOLATION = '23P01';
 
 const SELECT_COLUMNS = `

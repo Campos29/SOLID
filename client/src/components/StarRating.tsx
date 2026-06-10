@@ -12,8 +12,8 @@ const sizeClasses = {
   lg: 'text-3xl gap-1.5',
 }
 
-// Reusable star input/display used by the post-appointment review form and
-// read-only badges on the provider catalogue.
+
+
 export function StarRating({
   value,
   max = 5,

@@ -1,5 +1,5 @@
-// Presentation helpers shared by the scheduling UI. They keep the
-// backend's raw shapes (cents, ISO timestamps) out of the components.
+
+
 
 export function formatPrice(priceInCents: number): string {
   return (priceInCents / 100).toLocaleString('pt-BR', {
@@ -17,7 +17,7 @@ export function formatDuration(durationInMinutes: number): string {
   return minutes === 0 ? `${hours}h` : `${hours}h${minutes}min`
 }
 
-// Renders the start of a slot as a local HH:mm label for the time picker.
+
 export function formatSlotTime(isoTimestamp: string): string {
   return new Date(isoTimestamp).toLocaleTimeString('pt-BR', {
     hour: '2-digit',
@@ -25,13 +25,13 @@ export function formatSlotTime(isoTimestamp: string): string {
   })
 }
 
-// Shows the full booking window (start – end) for a slot option.
+
 export function formatSlotRange(startsAt: string, endsAt: string): string {
   return `${formatSlotTime(startsAt)} – ${formatSlotTime(endsAt)}`
 }
 
-// YYYY-MM-DD in the local timezone, used as the default scheduler date and as
-// the minimum selectable day so customers cannot book in the past.
+
+
 export function todayAsInputValue(): string {
   const now = new Date()
   const offsetMs = now.getTimezoneOffset() * 60 * 1000

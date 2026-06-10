@@ -97,8 +97,8 @@ export interface ReviewDependencies {
   submitReviewUseCase: SubmitReviewUseCasePort;
 }
 
-// Composition root: concrete implementations are wired here, at the
-// outermost layer, so use cases keep depending only on domain interfaces (DIP).
+
+
 export function buildAuthDependencies(): AuthDependencies {
   const userRepository = new PgUserRepository(pool);
 
