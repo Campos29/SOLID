@@ -11,6 +11,9 @@ import { SlotAlreadyBookedError } from '../../application/errors/SlotAlreadyBook
 import { ForbiddenResourceError } from '../../application/errors/ForbiddenResourceError';
 import { ReviewSubmissionUnavailableError } from '../../application/errors/ReviewSubmissionUnavailableError';
 import { InvalidAppointmentStatusError } from '../../application/errors/InvalidAppointmentStatusError';
+import { UnauthorizedReviewError } from '../../application/errors/UnauthorizedReviewError';
+import { AppointmentNotCompletedError } from '../../application/errors/AppointmentNotCompletedError';
+import { ReviewAlreadyExistsError } from '../../application/errors/ReviewAlreadyExistsError';
 
 const statusByErrorName: Record<string, number> = {
   [UserAlreadyExistsError.name]: 409,
@@ -24,6 +27,9 @@ const statusByErrorName: Record<string, number> = {
   [ForbiddenResourceError.name]: 403,
   [ReviewSubmissionUnavailableError.name]: 501,
   [InvalidAppointmentStatusError.name]: 409,
+  [UnauthorizedReviewError.name]: 403,
+  [AppointmentNotCompletedError.name]: 409,
+  [ReviewAlreadyExistsError.name]: 409,
 };
 
 const reasonByStatus: Record<number, string> = {
