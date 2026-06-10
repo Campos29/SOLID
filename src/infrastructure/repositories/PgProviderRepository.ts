@@ -62,6 +62,13 @@ export class PgProviderRepository implements IProviderRepository {
     return result.rows.map(mapProviderRow);
   }
 
+  async updateAverageRating(providerId: string, average: number): Promise<void> {
+    await this.database.query(
+      `UPDATE providers SET average_rating = $1 WHERE id = $2`,
+      [average, providerId],
+    );
+  }
+
   private async findOne(whereClause: string, values: unknown[]) {
     return this.findMany(`WHERE ${whereClause}`, values);
   }

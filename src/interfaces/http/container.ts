@@ -5,6 +5,7 @@ import { PgProviderRepository } from '../../infrastructure/repositories/PgProvid
 import { PgServiceRepository } from '../../infrastructure/repositories/PgServiceRepository';
 import { PgAvailabilityRepository } from '../../infrastructure/repositories/PgAvailabilityRepository';
 import { PgAppointmentRepository } from '../../infrastructure/repositories/PgAppointmentRepository';
+import { PgReviewRepository } from '../../infrastructure/repositories/PgReviewRepository';
 import { JwtTokenService } from '../../infrastructure/auth/JwtTokenService';
 import { RegisterUseCase } from '../../application/use-cases/RegisterUseCase';
 import { LoginUseCase } from '../../application/use-cases/LoginUseCase';
@@ -25,6 +26,7 @@ import { CancelAppointmentUseCase } from '../../application/use-cases/appointmen
 import { ConfirmAppointmentUseCase } from '../../application/use-cases/appointment/ConfirmAppointmentUseCase';
 import { RejectAppointmentUseCase } from '../../application/use-cases/appointment/RejectAppointmentUseCase';
 import { CompleteAppointmentUseCase } from '../../application/use-cases/appointment/CompleteAppointmentUseCase';
+import { SubmitReviewUseCase } from '../../application/use-cases/review/SubmitReviewUseCase';
 import { FreeCancellationStrategy } from '../../domain/strategies/FreeCancellationStrategy';
 import { ITokenService } from '../../domain/interfaces/ITokenService';
 import { IProviderRepository } from '../../domain/interfaces/IProviderRepository';
@@ -32,7 +34,6 @@ import { IServiceRepository } from '../../domain/interfaces/IServiceRepository';
 import { IAvailabilityRepository } from '../../domain/interfaces/IAvailabilityRepository';
 import { IAppointmentReader } from '../../domain/interfaces/IAppointmentRepository';
 import { IUserRepository } from '../../domain/interfaces/IUserRepository';
-import { ReviewSubmissionUnavailableError } from '../../application/errors/ReviewSubmissionUnavailableError';
 
 export interface AuthDependencies {
   registerUseCase: RegisterUseCase;
@@ -192,13 +193,15 @@ export function buildAppointmentDependencies(): AppointmentDependencies {
 }
 
 export function buildReviewDependencies(): ReviewDependencies {
-  return {
-    submitReviewUseCase: new UnavailableSubmitReviewUseCase(),
-  };
-}
+  const appointmentRepository = new PgAppointmentRepository(pool);
+  const reviewRepository = new PgReviewRepository(pool);
+  const providerRepository = new PgProviderRepository(pool);
 
-class UnavailableSubmitReviewUseCase implements SubmitReviewUseCasePort {
-  async execute(_input: SubmitReviewInput): Promise<{ review: ReviewView }> {
-    throw new ReviewSubmissionUnavailableError();
-  }
+  return {
+    submitReviewUseCase: new SubmitReviewUseCase(
+      appointmentRepository,
+      reviewRepository,
+      providerRepository,
+    ),
+  };
 }
