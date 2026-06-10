@@ -8,6 +8,7 @@
     "build": "tsc && tsc-alias",
     "start": "node dist/server.js",
     "migrate": "node scripts/migrate.js",
+    "docs:openapi": "tsx scripts/generate-openapi.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "vitest run --config vitest.e2e.config.mts"
