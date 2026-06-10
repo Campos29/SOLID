@@ -4,11 +4,13 @@
   "description": "Backend API for SlotWise using Fastify and Clean Architecture",
   "main": "dist/app.js",
   "scripts": {
-    "dev": "tsx watch src/app.ts",
+    "dev": "tsx watch src/server.ts",
     "build": "tsc && tsc-alias",
-    "start": "node dist/app.js",
+    "start": "node dist/server.js",
+    "migrate": "node scripts/migrate.js",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "test:e2e": "vitest run --config vitest.e2e.config.mts"
   },
   "keywords": [
     "clean-architecture",
