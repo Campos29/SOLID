@@ -1,4 +1,4 @@
-# ADR-004: Autenticacao via JWT com refresh token
+# ADR-004: Autenticação via JWT com refresh token
 
 ## Status
 
@@ -6,17 +6,17 @@ Accepted
 
 ## Contexto
 
-O SlotWise expoe uma API REST consumida pelo frontend React. Os perfis Admin, Provider e Client precisam acessar rotas protegidas e fluxos distintos.
+O SlotWise expõe uma API REST consumida pelo frontend React. Os perfis Admin, Provider e Client precisam acessar rotas protegidas e fluxos distintos.
 
-Como a aplicacao deve permanecer simples para execucao local e deploy academico, sessoes server-side adicionariam estado compartilhado e mais infraestrutura.
+Como a aplicação deve permanecer simples para execução local e deploy acadêmico, sessões server-side adicionariam estado compartilhado e mais infraestrutura.
 
-## Decisao
+## Decisão
 
-Usar JWT para autenticacao stateless, com access token para chamadas autenticadas e refresh token para renovacao de sessao. O contrato de tokens fica em `domain/interfaces/ITokenService`, enquanto a implementacao concreta fica em `infrastructure/auth/JwtTokenService`.
+Usar JWT para autenticação stateless, com access token para chamadas autenticadas e refresh token para renovação de sessão. O contrato de tokens fica em `domain/interfaces/ITokenService`, enquanto a implementação concreta fica em `infrastructure/auth/JwtTokenService`.
 
-## Consequencias
+## Consequências
 
-- A API nao precisa armazenar sessao em memoria ou banco para cada request.
-- O frontend consegue autenticar chamadas REST de forma previsivel.
-- A autorizacao por role pode ser aplicada nos middlewares HTTP.
-- Seguranca passa a depender de segredo JWT forte, expiracao adequada e tratamento cuidadoso do refresh token.
+- A API não precisa armazenar sessão em memória ou banco para cada request.
+- O frontend consegue autenticar chamadas REST de forma previsível.
+- A autorização por role pode ser aplicada nos middlewares HTTP.
+- Segurança passa a depender de segredo JWT forte, expiração adequada e tratamento cuidadoso do refresh token.
