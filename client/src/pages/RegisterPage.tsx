@@ -52,7 +52,7 @@ export function RegisterPage() {
       footer={
         <>
           Já possui uma conta?{' '}
-          <Link to="/login" className="font-medium text-indigo-600 hover:underline">
+          <Link to="/login" className="font-semibold text-[#E65F2B] hover:text-[#D04F1D] hover:underline">
             Entrar
           </Link>
         </>
@@ -104,14 +104,14 @@ export function RegisterPage() {
         />
 
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="role" className="text-sm font-medium text-gray-700">
+          <label htmlFor="role" className="text-sm font-semibold text-gray-700">
             Tipo de conta
           </label>
           <select
             id="role"
             value={role}
             onChange={(event) => setRole(event.target.value as UserRole)}
-            className="rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 shadow-sm transition-colors focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+            className="rounded-2xl border border-[#ECE6E2] bg-white px-4 py-3 text-sm text-gray-900 shadow-sm transition-all focus:border-[#E65F2B] focus:outline-none focus:ring-1 focus:ring-[#E65F2B]"
           >
             {USER_ROLES.map((option) => (
               <option key={option} value={option}>
