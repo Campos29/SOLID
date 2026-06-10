@@ -1,0 +1,33 @@
+sequenceDiagram
+    autonumber
+    actor Client as Cliente (SPA)
+    participant Ctrl as AppointmentController
+    participant UC as CreateAppointmentUseCase
+    participant Repo as PgAppointmentRepository
+    participant DB as PostgreSQL (DB)
+    participant Notifier as AppointmentStatusNotifier
+    participant Obs as AppointmentStatusEmailObserver
+    participant Mail as EmailNotification (Nodemailer)
+
+    Client->>Ctrl: POST /api/v1/appointments (providerId, serviceId, startsAt)
+    Ctrl->>Ctrl: Validar payload com Zod
+    Ctrl->>UC: execute(input)
+    UC->>Repo: findConflict(providerId, startsAt, endsAt)
+    Note over Repo, DB: Iniciado locking transacional com SELECT ... FOR UPDATE
+    Repo->>DB: Query de concorrência com LOCK
+    DB-->>Repo: Retorna conflitos (se houver)
+    alt Sem Conflitos
+        UC->>Repo: save(appointment)
+        Repo->>DB: INSERT INTO appointments
+        DB-->>Repo: Confirmado
+        UC->>Notifier: publish(statusChangeEvent)
+        Notifier->>Obs: update(statusChangeEvent)
+        Obs->>Mail: send(recipientEmail, message)
+        Note over Mail: Disparo assíncrono em background
+        UC-->>Ctrl: Retorna Appointment criado
+        Ctrl-->>Client: 201 Created (Appointment JSON)
+    else Com Conflito
+        DB-->>UC: Conflito detectado (ou exceção de LOCK)
+        UC-->>Ctrl: Lança erro (SlotConflictException)
+        Ctrl-->>Client: 409 Conflict / Error JSON
+    end

@@ -1,0 +1,35 @@
+graph TD
+  subgraph ClientApp ["Aplicativo Client (Navegador)"]
+    UI["Interface React (SPA)"]
+    Zustand["Zustand (Estado Global)"]
+    Axios["Axios (Cliente HTTP)"]
+    UI --> Zustand
+    UI --> Axios
+  end
+
+  subgraph BackendAPI ["API Backend (Servidor Node.js)"]
+    Router["Fastify Router"]
+    Controllers["HTTP Controllers"]
+    UseCases["Use Cases (Camada de Aplicação)"]
+    Entities["Entidades de Domínio (Pure JS/TS)"]
+    Repos["Pg Repositories (Camada de Infra)"]
+    MailService["Nodemailer (Serviço de Email)"]
+    
+    Router --> Controllers
+    Controllers --> UseCases
+    UseCases --> Entities
+    UseCases --> Repos
+    UseCases --> MailService
+  end
+
+  subgraph DatabaseSystem ["Banco de Dados"]
+    DB[("PostgreSQL")]
+  end
+
+  subgraph ExternalServices ["Serviços Externos"]
+    SMTP["Servidor SMTP / E-mail"]
+  end
+
+  Axios -- "HTTP / JSON (REST)" --> Router
+  Repos -- "SQL Puro (Pool pg)" --> DB
+  MailService -- "SMTP Protocol" --> SMTP
