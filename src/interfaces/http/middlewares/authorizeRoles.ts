@@ -1,7 +1,7 @@
 import { preHandlerHookHandler } from 'fastify';
 import { UserRole } from '../../../domain/entities/User';
 
-// Restricts a route to the given JWT roles after authenticate has run.
+
 export function authorizeRoles(...allowedRoles: UserRole[]): preHandlerHookHandler {
   return async function (request, reply) {
     if (!allowedRoles.includes(request.user.role)) {

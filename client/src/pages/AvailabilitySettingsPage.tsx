@@ -39,8 +39,8 @@ function toWeeklySlots(state: Record<number, DayState>): WeeklyAvailabilitySlot[
   }))
 }
 
-// Provider-facing form to configure the weekly availability grid that drives
-// the customer slot calculation.
+
+
 export function AvailabilitySettingsPage() {
   const { user } = useAuth()
   const [days, setDays] = useState<Record<number, DayState>>(buildInitialState)

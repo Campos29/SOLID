@@ -23,7 +23,7 @@ export function buildApp(): FastifyInstance {
     },
   });
 
-  // Zod as the validator and serializer for all routes
+
   app.setValidatorCompiler(validatorCompiler);
   app.setSerializerCompiler(serializerCompiler);
 

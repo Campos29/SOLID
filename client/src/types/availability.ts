@@ -1,5 +1,5 @@
-// Mirrors the Availability domain entity (src/domain/entities/Availability.ts).
-// dayOfWeek follows JS getDay(): 0 = Sunday ... 6 = Saturday.
+
+
 export interface WeeklyAvailabilitySlot {
   dayOfWeek: number
   startTime: string

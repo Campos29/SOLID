@@ -7,8 +7,8 @@ import { providerService } from '../services/providerService'
 import { extractErrorMessage } from '../lib/api'
 import type { Provider } from '../types/scheduling'
 
-// Customer-facing landing page: search the provider catalogue by category and
-// open the scheduler to book a free slot with the chosen provider.
+
+
 export function HomePage() {
   const [providers, setProviders] = useState<Provider[]>([])
   const [searchTerm, setSearchTerm] = useState('')

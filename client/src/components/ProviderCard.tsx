@@ -7,8 +7,8 @@ interface ProviderCardProps {
   onSchedule: (provider: Provider) => void
 }
 
-// Single entry in the provider catalogue. Surfaces the provider's category as
-// a badge and exposes the call-to-action that opens the scheduler.
+
+
 export function ProviderCard({ provider, onSchedule }: ProviderCardProps) {
   const averageRating = provider.averageRating ?? 0
   const showRating = averageRating > 0
