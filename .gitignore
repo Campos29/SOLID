@@ -41,6 +41,9 @@ Thumbs.db
 *.pdf
 
 *.md
+!README.md
+!adrs/
+!adrs/*.md
 
 node_modules/
 client/node_modules/
@@ -88,6 +91,9 @@ Thumbs.db
 *.pdf
 
 *.md
+!README.md
+!adrs/
+!adrs/*.md
 
 node_modules/
 client/node_modules/
