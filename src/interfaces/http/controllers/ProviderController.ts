@@ -299,6 +299,8 @@ export class ProviderController {
       description: provider.description,
       category: provider.category,
       createdAt: provider.createdAt.toISOString(),
+      averageRating: provider.averageRating,
+      reviewCount: provider.reviewCount,
     };
   }
 

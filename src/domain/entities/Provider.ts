@@ -5,6 +5,8 @@ export type ProviderProps = {
   description: string;
   category: string;
   createdAt: Date;
+  averageRating: number;
+  reviewCount: number;
 };
 
 export type CreateProviderInput = {
@@ -14,6 +16,8 @@ export type CreateProviderInput = {
   description: string;
   category: string;
   createdAt?: Date;
+  averageRating?: number;
+  reviewCount?: number;
 };
 
 export class Provider {
@@ -29,6 +33,8 @@ export class Provider {
       ...input,
       category: input.category.toLowerCase(),
       createdAt: input.createdAt ?? new Date(),
+      averageRating: input.averageRating ?? 0,
+      reviewCount: input.reviewCount ?? 0,
     });
   }
 
@@ -54,6 +60,14 @@ export class Provider {
 
   get createdAt(): Date {
     return this.props.createdAt;
+  }
+
+  get averageRating(): number {
+    return this.props.averageRating;
+  }
+
+  get reviewCount(): number {
+    return this.props.reviewCount;
   }
 }
 

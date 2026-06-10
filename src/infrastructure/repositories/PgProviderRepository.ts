@@ -8,6 +8,8 @@ type ProviderRow = {
   name: string;
   description: string;
   category: string;
+  average_rating: number | string;
+  review_count: number | string;
   created_at: Date;
 };
 
@@ -23,10 +25,10 @@ export class PgProviderRepository implements IProviderRepository {
       `INSERT INTO providers (id, user_id, name, description, category, created_at)
        VALUES ($1, $2, $3, $4, $5, $6)
        ON CONFLICT (id) DO UPDATE SET
-         name = EXCLUDED.name,
-         description = EXCLUDED.description,
-         category = EXCLUDED.category,
-         updated_at = NOW()`,
+          name = EXCLUDED.name,
+          description = EXCLUDED.description,
+          category = EXCLUDED.category,
+          updated_at = NOW()`,
       [
         provider.id,
         provider.userId,
@@ -75,7 +77,8 @@ export class PgProviderRepository implements IProviderRepository {
 
   private async findMany(whereClause: string, values: unknown[]) {
     return this.database.query<ProviderRow>(
-      `SELECT id, user_id, name, description, category, created_at
+      `SELECT id, user_id, name, description, category, average_rating, created_at,
+              (SELECT COUNT(*)::int FROM reviews WHERE reviews.provider_id = providers.id) as review_count
        FROM providers
        ${whereClause}
        ORDER BY name ASC`,
@@ -96,5 +99,7 @@ function mapProviderRow(row: ProviderRow): Provider {
     description: row.description,
     category: row.category,
     createdAt: row.created_at,
+    averageRating: row.average_rating ? Number(row.average_rating) : 0,
+    reviewCount: row.review_count ? Number(row.review_count) : 0,
   });
 }
