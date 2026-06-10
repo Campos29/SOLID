@@ -6,17 +6,17 @@ Accepted
 
 ## Contexto
 
-O sistema usa PostgreSQL como banco principal. A regra de conflito de agendamentos depende de recursos especificos do Postgres, como `tstzrange`, constraint `EXCLUDE` com `gist` e filtros por status.
+O sistema usa PostgreSQL como banco principal. A regra de conflito de agendamentos depende de recursos específicos do Postgres, como `tstzrange`, constraint `EXCLUDE` com `gist` e filtros por status.
 
-O projeto tambem exige que o `Pool` do `pg` fique restrito a `infrastructure/` e que o dominio nao receba tipos gerados por ferramentas externas.
+O projeto também exige que o `Pool` do `pg` fique restrito a `infrastructure/` e que o domínio não receba tipos gerados por ferramentas externas.
 
-## Decisao
+## Decisão
 
-Usar `pg` (`node-postgres`) com SQL puro em reposititorios concretos, mantendo migrations versionadas em arquivos `.sql` numerados em `/migrations`.
+Usar `pg` (`node-postgres`) com SQL puro em repositórios concretos, mantendo migrations versionadas em arquivos `.sql` numerados em `/migrations`.
 
-## Consequencias
+## Consequências
 
-- Queries criticas ficam explicitas e revisaveis.
-- Recursos especificos do PostgreSQL podem ser usados sem contorno de ORM.
-- O dominio continua independente de tipos de persistencia.
-- A equipe precisa escrever e testar SQL manualmente, incluindo parametros, indices e mapeamento entre linhas do banco e entidades.
+- Queries críticas ficam explícitas e revisáveis.
+- Recursos específicos do PostgreSQL podem ser usados sem contorno de ORM.
+- O domínio continua independente de tipos de persistência.
+- A equipe precisa escrever e testar SQL manualmente, incluindo parâmetros, índices e mapeamento entre linhas do banco e entidades.
