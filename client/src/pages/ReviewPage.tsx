@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { AppHeader } from '../components/AppHeader'
+import { AppLayout } from '../components/AppLayout'
 import { StarRating } from '../components/StarRating'
 import { Button } from '../components/ui/Button'
 import { extractErrorMessage } from '../lib/api'
@@ -25,15 +26,15 @@ export function ReviewPage() {
 
   if (!resolvedAppointmentId) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <AppLayout>
         <AppHeader />
         <main className="mx-auto max-w-lg px-4 py-10 text-center text-sm text-gray-500">
           Agendamento não encontrado.{' '}
-          <Link to="/appointments" className="font-medium text-indigo-600 hover:underline">
+          <Link to="/appointments" className="font-semibold text-[#E65F2B] hover:underline">
             Voltar
           </Link>
         </main>
-      </div>
+      </AppLayout>
     )
   }
 
@@ -62,31 +63,37 @@ export function ReviewPage() {
   const providerLabel = state?.providerName ?? 'seu prestador'
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <AppHeader />
+    <AppLayout>
+      <div className="mx-auto max-w-2xl">
+        <div className="mb-6">
+          <Link
+            to="/appointments"
+            className="inline-flex items-center gap-1 text-sm font-semibold text-[#E65F2B] hover:text-[#c54e20] transition-colors"
+          >
+            ← Meus agendamentos
+          </Link>
+        </div>
 
-      <main className="mx-auto max-w-lg px-4 py-8">
-        <Link
-          to="/appointments"
-          className="text-sm font-medium text-indigo-600 hover:text-indigo-700"
-        >
-          ← Meus agendamentos
-        </Link>
+        <AppHeader />
 
-        <div className="mt-6 rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-100">
-          <h1 className="text-xl font-bold text-gray-900">Avaliar atendimento</h1>
+        <div className="mt-8 rounded-[28px] border border-[#ECE6E2] bg-white p-8 shadow-sm">
+          <h1 className="font-outfit text-2xl font-bold tracking-tight text-gray-900">
+            Avaliar atendimento
+          </h1>
           <p className="mt-2 text-sm text-gray-500">
-            Como foi sua experiência com <span className="font-medium text-gray-700">{providerLabel}</span>?
+            Como foi sua experiência com <span className="font-bold text-gray-700">{providerLabel}</span>?
           </p>
 
-          <form onSubmit={handleSubmit} className="mt-6 space-y-5">
+          <form onSubmit={handleSubmit} className="mt-6 space-y-6">
             <div>
-              <p className="mb-2 text-sm font-medium text-gray-700">Sua nota</p>
-              <StarRating value={rating} onChange={setRating} size="lg" />
+              <p className="mb-2 text-sm font-semibold text-gray-700">Sua nota</p>
+              <div className="inline-block rounded-2xl bg-[#FAF6F4] p-3 border border-[#E65F2B]/10">
+                <StarRating value={rating} onChange={setRating} size="lg" />
+              </div>
             </div>
 
             <div>
-              <label htmlFor="comment" className="mb-2 block text-sm font-medium text-gray-700">
+              <label htmlFor="comment" className="mb-2 block text-sm font-semibold text-gray-700">
                 Comentário (opcional)
               </label>
               <textarea
@@ -96,32 +103,33 @@ export function ReviewPage() {
                 rows={4}
                 maxLength={1000}
                 placeholder="Conte como foi o atendimento..."
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+                className="w-full rounded-2xl border border-[#ECE6E2] px-4 py-3 text-sm text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-[#E65F2B] focus:outline-none focus:ring-1 focus:ring-[#E65F2B] transition-colors"
               />
             </div>
 
             {error && (
-              <p role="alert" className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700 ring-1 ring-red-100">
+              <p role="alert" className="rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700 ring-1 ring-red-100">
                 {error}
               </p>
             )}
 
-            <div className="flex gap-3">
+            <div className="flex gap-4 pt-2">
               <Link
                 to="/appointments"
-                className="flex flex-1 items-center justify-center rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-semibold text-gray-700 transition-colors hover:bg-gray-50"
+                className="flex flex-1 items-center justify-center rounded-2xl border border-[#ECE6E2] px-4 py-3 text-sm font-bold text-gray-700 hover:bg-gray-50 transition-colors"
               >
                 Cancelar
               </Link>
               <div className="flex-1">
-                <Button type="submit" isLoading={isSubmitting} disabled={rating < 1}>
+                <Button type="submit" isLoading={isSubmitting} disabled={rating < 1} className="w-full rounded-2xl bg-[#E65F2B] hover:bg-[#c54e20]">
                   Enviar avaliação
                 </Button>
               </div>
             </div>
           </form>
         </div>
-      </main>
-    </div>
+      </div>
+    </AppLayout>
   )
 }
+

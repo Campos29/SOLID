@@ -1,1 +1,17 @@
 @import "tailwindcss";
+
+@theme {
+  --color-brand-primary: #E65F2B;
+  --color-brand-primary-hover: #D04F1D;
+  --color-brand-accent: #F9EBE6;
+  --color-brand-bg: #FAF6F4;
+  --color-brand-dark: #2A2827;
+  --font-sans: "Outfit", "Inter", sans-serif;
+}
+
+body {
+  background-color: var(--color-brand-bg);
+  color: var(--color-brand-dark);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
