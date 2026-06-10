@@ -102,3 +102,6 @@ client/node_modules/
 .cursor/
 .specify/
 graphify-out/
+
+# Generated OpenAPI spec (run `npm run docs:openapi` to regenerate)
+openapi.json

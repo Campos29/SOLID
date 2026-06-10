@@ -40,6 +40,15 @@ export function buildApp(): FastifyInstance {
         version: '1.0.0',
       },
       servers: [{ url: `http://localhost:${env.PORT}` }],
+      tags: [
+        { name: 'auth', description: 'Registro, login e renovação de tokens JWT' },
+        {
+          name: 'providers',
+          description: 'Cadastro de prestadores, serviços e configuração de disponibilidade semanal',
+        },
+        { name: 'appointments', description: 'Criação e ciclo de vida dos agendamentos' },
+        { name: 'reviews', description: 'Avaliações de atendimentos concluídos' },
+      ],
       components: {
         securitySchemes: {
           bearerAuth: {
