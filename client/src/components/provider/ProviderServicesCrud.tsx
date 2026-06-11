@@ -129,40 +129,40 @@ export function ProviderServicesCrud({
   }
 
   return (
-    <section className="rounded-2xl bg-white shadow-sm ring-1 ring-gray-100">
-      <div className="border-b border-gray-100 px-6 py-4">
-        <h2 className="text-lg font-semibold text-gray-900">Serviços</h2>
+    <section className="rounded-[24px] border border-[#ECE6E2] bg-white shadow-sm">
+      <div className="border-b border-[#ECE6E2] px-6 py-5">
+        <h2 className="font-outfit text-lg font-bold text-gray-900">Serviços</h2>
         <p className="mt-1 text-sm text-gray-500">
           Gerencie o catálogo que os clientes veem ao agendar.
         </p>
       </div>
 
-      <div className="px-6 py-4">
+      <div className="px-6 py-5">
         {error && (
-          <p role="alert" className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700 ring-1 ring-red-100">
+          <p role="alert" className="mb-4 rounded-xl bg-red-50 px-3 py-2 text-sm font-medium text-red-700 ring-1 ring-red-100">
             {error}
           </p>
         )}
 
         {services.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-gray-200 px-4 py-8 text-center text-sm text-gray-500">
+          <div className="rounded-2xl border border-dashed border-[#ECE6E2] px-4 py-8 text-center text-sm text-gray-500">
             Nenhum serviço cadastrado. Adicione o primeiro abaixo.
           </div>
         ) : (
-          <div className="overflow-hidden rounded-xl ring-1 ring-gray-200">
-            <table className="min-w-full divide-y divide-gray-200 text-sm">
-              <thead className="bg-gray-50">
+          <div className="overflow-hidden rounded-2xl border border-[#ECE6E2]">
+            <table className="min-w-full divide-y divide-[#ECE6E2] text-sm">
+              <thead className="bg-[#FAF6F4]/50">
                 <tr>
-                  <th className="px-4 py-3 text-left font-medium text-gray-600">Serviço</th>
-                  <th className="px-4 py-3 text-left font-medium text-gray-600">Duração</th>
-                  <th className="px-4 py-3 text-left font-medium text-gray-600">Preço</th>
-                  <th className="px-4 py-3 text-right font-medium text-gray-600">Ações</th>
+                  <th className="px-4 py-3 text-left font-bold text-gray-700 uppercase tracking-wider text-xs">Serviço</th>
+                  <th className="px-4 py-3 text-left font-bold text-gray-700 uppercase tracking-wider text-xs">Duração</th>
+                  <th className="px-4 py-3 text-left font-bold text-gray-700 uppercase tracking-wider text-xs">Preço</th>
+                  <th className="px-4 py-3 text-right font-bold text-gray-700 uppercase tracking-wider text-xs">Ações</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100 bg-white">
+              <tbody className="divide-y divide-[#ECE6E2] bg-white">
                 {services.map((service) =>
                   editingId === service.id ? (
-                    <tr key={service.id} className="bg-indigo-50/40">
+                    <tr key={service.id} className="bg-[#FAF6F4]/40">
                       <td colSpan={4} className="px-4 py-4">
                         <form
                           onSubmit={(event) => handleUpdate(event, service.id)}
@@ -195,13 +195,13 @@ export function ProviderServicesCrud({
                             required
                           />
                           <div className="flex items-end gap-2">
-                            <Button type="submit" isLoading={savingId === service.id}>
+                            <Button type="submit" isLoading={savingId === service.id} className="rounded-xl bg-[#E65F2B] hover:bg-[#c54e20]">
                               Salvar
                             </Button>
                             <button
                               type="button"
                               onClick={cancelEdit}
-                              className="rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50"
+                              className="rounded-xl border border-[#ECE6E2] px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
                             >
                               Cancelar
                             </button>
@@ -210,12 +210,12 @@ export function ProviderServicesCrud({
                       </td>
                     </tr>
                   ) : (
-                    <tr key={service.id}>
-                      <td className="px-4 py-3 font-medium text-gray-900">{service.name}</td>
-                      <td className="px-4 py-3 text-gray-600">
+                    <tr key={service.id} className="hover:bg-[#FAF6F4]/10 transition-colors">
+                      <td className="px-4 py-3 font-bold text-gray-900">{service.name}</td>
+                      <td className="px-4 py-3 font-medium text-gray-600">
                         {formatDuration(service.durationInMinutes)}
                       </td>
-                      <td className="px-4 py-3 text-gray-600">
+                      <td className="px-4 py-3 font-semibold text-gray-750">
                         {formatPrice(service.priceInCents)}
                       </td>
                       <td className="px-4 py-3">
@@ -223,7 +223,7 @@ export function ProviderServicesCrud({
                           <button
                             type="button"
                             onClick={() => startEdit(service)}
-                            className="rounded-lg px-3 py-1.5 text-sm font-medium text-indigo-600 hover:bg-indigo-50"
+                            className="rounded-xl px-3 py-1.5 text-sm font-bold text-[#E65F2B] hover:bg-[#F9EBE6] transition-colors"
                           >
                             Editar
                           </button>
@@ -231,7 +231,7 @@ export function ProviderServicesCrud({
                             type="button"
                             onClick={() => handleDelete(service)}
                             disabled={deletingId === service.id}
-                            className="rounded-lg px-3 py-1.5 text-sm font-medium text-red-600 hover:bg-red-50 disabled:opacity-60"
+                            className="rounded-xl px-3 py-1.5 text-sm font-bold text-red-600 hover:bg-red-50 disabled:opacity-60 transition-colors"
                           >
                             {deletingId === service.id ? 'Removendo...' : 'Excluir'}
                           </button>
@@ -246,8 +246,8 @@ export function ProviderServicesCrud({
         )}
       </div>
 
-      <div className="border-t border-gray-100 bg-gray-50 px-6 py-5">
-        <h3 className="text-sm font-semibold text-gray-900">Novo serviço</h3>
+      <div className="border-t border-[#ECE6E2] bg-[#FAF6F4]/40 px-6 py-6 rounded-b-[24px]">
+        <h3 className="font-outfit text-sm font-bold text-gray-900 uppercase tracking-wider">Novo serviço</h3>
         <form onSubmit={handleCreate} className="mt-4 grid gap-4 sm:grid-cols-4">
           <TextField
             id="create-service-name"
@@ -278,7 +278,7 @@ export function ProviderServicesCrud({
             required
           />
           <div className="flex items-end">
-            <Button type="submit" isLoading={isCreating}>
+            <Button type="submit" isLoading={isCreating} className="w-full rounded-xl bg-[#E65F2B] hover:bg-[#c54e20]">
               Adicionar
             </Button>
           </div>

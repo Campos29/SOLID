@@ -27,7 +27,7 @@ function buildPoolConfig(): PoolConfig {
 
 export const pool = new Pool(buildPoolConfig());
 
-// Unhandled idle-client errors would crash the process silently without this
+
 pool.on('error', (err: Error) => {
   console.error('[database] unexpected idle client error:', err.message);
   process.exit(1);

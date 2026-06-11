@@ -1,0 +1,57 @@
+classDiagram
+    %% Strategy Pattern
+    class ICancellationStrategy {
+        <<interface>>
+        +calculate(input: CancellationStrategyInput) CancellationStrategyResult
+    }
+    class FreeCancellationStrategy {
+        +calculate(input: CancellationStrategyInput) CancellationStrategyResult
+    }
+    class PaidCancellationStrategy {
+        +calculate(input: CancellationStrategyInput) CancellationStrategyResult
+    }
+    ICancellationStrategy <|.. FreeCancellationStrategy
+    ICancellationStrategy <|.. PaidCancellationStrategy
+
+    %% Factory Method Pattern
+    class INotification {
+        <<interface>>
+        +send(recipient: string, message: string) Promise~void~
+    }
+    class EmailNotification {
+        +send(recipient: string, message: string) Promise~void~
+    }
+    class SMSNotification {
+        +send(recipient: string, message: string) Promise~void~
+    }
+    class NotificationFactory {
+        -creators: Map~string, NotificationCreator~
+        +register(channel: string, creator: NotificationCreator) this
+        +create(channel: string) INotification
+    }
+    INotification <|.. EmailNotification
+    INotification <|.. SMSNotification
+    NotificationFactory ..> INotification : creates
+
+    %% Observer Pattern
+    class IAppointmentStatusObserver {
+        <<interface>>
+        +update(event: AppointmentStatusChangeEvent) Promise~void~
+    }
+    class IAppointmentStatusPublisher {
+        <<interface>>
+        +publish(event: AppointmentStatusChangeEvent) Promise~void~
+    }
+    class AppointmentStatusNotifier {
+        -observers: List~IAppointmentStatusObserver~
+        +subscribe(observer: IAppointmentStatusObserver) void
+        +publish(event: AppointmentStatusChangeEvent) Promise~void~
+    }
+    class AppointmentStatusEmailObserver {
+        -mailService: INotification
+        +update(event: AppointmentStatusChangeEvent) Promise~void~
+    }
+    IAppointmentStatusPublisher <|.. AppointmentStatusNotifier
+    IAppointmentStatusObserver <|.. AppointmentStatusEmailObserver
+    AppointmentStatusNotifier o--> IAppointmentStatusObserver : notifies
+    AppointmentStatusEmailObserver --> INotification : uses

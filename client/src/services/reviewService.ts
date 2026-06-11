@@ -3,8 +3,8 @@ import type { SubmitReviewPayload, SubmitReviewResponse } from '../types/review'
 
 const REVIEWED_KEY = 'slotwise.reviewedAppointments'
 
-// Persists reviewed appointment ids so the "Avaliar" CTA can be hidden after
-// a successful submission while the list endpoint does not expose review state.
+
+
 export function markAppointmentReviewed(appointmentId: string): void {
   const reviewed = getReviewedAppointmentIds()
   reviewed.add(appointmentId)

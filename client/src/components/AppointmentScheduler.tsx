@@ -15,8 +15,8 @@ interface AppointmentSchedulerProps {
   onClose: () => void
 }
 
-// Modal that walks a customer through booking with a provider: pick a service,
-// choose a day, load the free slots for that day and confirm the appointment.
+
+
 export function AppointmentScheduler({ provider, onClose }: AppointmentSchedulerProps) {
   const [services, setServices] = useState<Service[]>([])
   const [selectedServiceId, setSelectedServiceId] = useState<string>('')
@@ -31,7 +31,7 @@ export function AppointmentScheduler({ provider, onClose }: AppointmentScheduler
   const [error, setError] = useState<string | null>(null)
   const [confirmation, setConfirmation] = useState<string | null>(null)
 
-  // Load the provider's services once when the modal opens.
+
   useEffect(() => {
     let active = true
     async function loadServices() {
@@ -52,7 +52,7 @@ export function AppointmentScheduler({ provider, onClose }: AppointmentScheduler
     }
   }, [provider.id])
 
-  // Refetch the free slots whenever the selected service or day changes.
+
   useEffect(() => {
     if (!selectedServiceId || !date) {
       return

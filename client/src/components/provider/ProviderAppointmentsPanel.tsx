@@ -67,16 +67,16 @@ export function ProviderAppointmentsPanel({ providerId }: ProviderAppointmentsPa
   const pendingCount = appointments.filter((item) => item.status.toLowerCase() === 'pending').length
 
   return (
-    <div className="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-gray-100">
+    <div className="rounded-[24px] border border-[#ECE6E2] bg-white p-6 shadow-sm">
       <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-lg font-semibold text-gray-900">Agendamentos</h2>
+          <h2 className="font-outfit text-lg font-bold text-gray-900">Agendamentos</h2>
           <p className="mt-1 text-sm text-gray-500">
             Confirme solicitações pendentes dos seus clientes.
           </p>
         </div>
         {pendingCount > 0 && (
-          <span className="mt-2 inline-flex w-fit items-center rounded-full bg-amber-50 px-3 py-1 text-xs font-semibold text-amber-700 ring-1 ring-amber-100 sm:mt-0">
+          <span className="mt-2 inline-flex w-fit items-center rounded-full bg-[#FAF6F4] px-3 py-1 text-xs font-bold text-[#E65F2B] border border-[#E65F2B]/10 sm:mt-0">
             {pendingCount} pendente{pendingCount === 1 ? '' : 's'}
           </span>
         )}
@@ -85,14 +85,17 @@ export function ProviderAppointmentsPanel({ providerId }: ProviderAppointmentsPa
       {error && (
         <p
           role="alert"
-          className="mt-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700 ring-1 ring-red-100"
+          className="mt-4 rounded-xl bg-red-50 px-3 py-2 text-sm font-medium text-red-700 ring-1 ring-red-100"
         >
           {error}
         </p>
       )}
 
       {isLoading ? (
-        <p className="mt-6 text-sm text-gray-500">Carregando agendamentos...</p>
+        <div className="mt-8 py-12 text-center">
+          <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-[#E65F2B] border-t-transparent"></div>
+          <p className="mt-4 text-sm font-medium text-gray-500">Carregando agendamentos...</p>
+        </div>
       ) : appointments.length === 0 ? (
         <p className="mt-6 text-sm text-gray-500">Nenhum agendamento recebido ainda.</p>
       ) : (
@@ -100,16 +103,27 @@ export function ProviderAppointmentsPanel({ providerId }: ProviderAppointmentsPa
           {appointments.map((appointment) => (
             <li
               key={appointment.id}
-              className="flex flex-col gap-3 rounded-xl border border-gray-100 p-4 sm:flex-row sm:items-center sm:justify-between"
+              className="flex flex-col gap-3 rounded-2xl border border-[#ECE6E2] p-4 sm:flex-row sm:items-center sm:justify-between hover:bg-[#FAF6F4]/30 transition-colors"
             >
               <div>
-                <p className="text-sm font-semibold text-gray-900">{appointment.clientName}</p>
-                <p className="mt-1 text-sm text-gray-700">{appointment.serviceName}</p>
-                <p className="mt-1 text-sm text-gray-600">
+                <p className="text-sm font-bold text-gray-900">{appointment.clientName}</p>
+                <p className="mt-1 text-sm font-medium text-gray-700">{appointment.serviceName}</p>
+                <p className="mt-1 text-sm text-gray-500">
                   {formatSlotRange(appointment.startsAt, appointment.endsAt)}
                 </p>
-                <p className="mt-1 text-xs text-gray-500">
-                  Status: {formatAppointmentStatus(appointment.status)}
+                <p className="mt-1.5 text-xs">
+                  <span className="font-semibold text-gray-400 uppercase tracking-wider">Status: </span>
+                  <span className={`inline-flex items-center rounded-md px-2 py-0.5 text-xs font-semibold ${
+                    appointment.status.toLowerCase() === 'pending'
+                      ? 'bg-amber-50 text-amber-700 border border-amber-100'
+                      : appointment.status.toLowerCase() === 'confirmed'
+                      ? 'bg-blue-50 text-blue-700 border border-blue-100'
+                      : appointment.status.toLowerCase() === 'completed'
+                      ? 'bg-emerald-50 text-emerald-700 border border-emerald-100'
+                      : 'bg-gray-50 text-gray-700 border border-gray-100'
+                  }`}>
+                    {formatAppointmentStatus(appointment.status)}
+                  </span>
                 </p>
               </div>
 
@@ -125,7 +139,7 @@ export function ProviderAppointmentsPanel({ providerId }: ProviderAppointmentsPa
                       )
                     }
                     disabled={actingId === appointment.id}
-                    className="inline-flex items-center justify-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-indigo-700 disabled:opacity-60"
+                    className="inline-flex items-center justify-center rounded-xl bg-[#E65F2B] px-4 py-2 text-sm font-semibold text-white transition-all hover:bg-[#c54e20] disabled:opacity-60 shadow-sm"
                   >
                     {actingId === appointment.id ? 'Processando...' : 'Confirmar'}
                   </button>
@@ -141,7 +155,7 @@ export function ProviderAppointmentsPanel({ providerId }: ProviderAppointmentsPa
                       )
                     }
                     disabled={actingId === appointment.id}
-                    className="inline-flex items-center justify-center rounded-lg border border-red-200 px-4 py-2 text-sm font-semibold text-red-700 transition-colors hover:bg-red-50 disabled:opacity-60"
+                    className="inline-flex items-center justify-center rounded-xl border border-[#ECE6E2] bg-white px-4 py-2 text-sm font-semibold text-red-600 transition-all hover:bg-red-50 hover:border-red-100 disabled:opacity-60"
                   >
                     Recusar
                   </button>
@@ -157,7 +171,7 @@ export function ProviderAppointmentsPanel({ providerId }: ProviderAppointmentsPa
                       )
                     }
                     disabled={actingId === appointment.id}
-                    className="inline-flex items-center justify-center rounded-lg bg-green-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-green-700 disabled:opacity-60"
+                    className="inline-flex items-center justify-center rounded-xl bg-[#E65F2B] px-4 py-2 text-sm font-semibold text-white transition-all hover:bg-[#c54e20] disabled:opacity-60 shadow-sm"
                   >
                     {actingId === appointment.id ? 'Processando...' : 'Concluir'}
                   </button>

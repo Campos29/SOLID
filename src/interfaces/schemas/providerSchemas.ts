@@ -44,6 +44,8 @@ export const providerResponseSchema = z.object({
   description: z.string(),
   category: z.string(),
   createdAt: z.string().datetime(),
+  averageRating: z.number().optional(),
+  reviewCount: z.number().int().optional(),
 });
 
 export const providerListResponseSchema = z.object({
